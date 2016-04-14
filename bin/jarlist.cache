@@ -1,7 +1,5 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1458959691715 21086 25c137e5b475affeba99ace72e37f5ca9396646e F:\zlm Java\workspace\multidex\library\libs\android-support-multidex.jar
-1458959691708 21086 25c137e5b475affeba99ace72e37f5ca9396646e F:\zlm Java\workspace\multidex\instrumentation\libs\android-support-multidex.jar
-1458959690727 1422188 1dc1f63cee098b27db60b9a2833fd7ca58f89636 F:\zlm Java\workspace\android-support-v7-appcompat\libs\android-support-v4.jar
 1459006030441 1422188 1dc1f63cee098b27db60b9a2833fd7ca58f89636 F:\zlm Java\workspace\iToronto\libs\android-support-v4.jar
+1458959690727 1422188 1dc1f63cee098b27db60b9a2833fd7ca58f89636 F:\zlm Java\workspace\android-support-v7-appcompat\libs\android-support-v4.jar

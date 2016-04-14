@@ -36,13 +36,20 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -125,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         /* Load the Facebook login button and set up the tracker to monitor access token changes */
         mFacebookCallbackManager = CallbackManager.Factory.create();
         mFacebookLoginButton = (LoginButton) findViewById(R.id.login_with_facebook);
+        mFacebookLoginButton.setReadPermissions(Arrays.asList("user_friends", "email", "user_photos", "user_location", "user_birthday", "public_profile"));
         /*mFacebookAccessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
@@ -133,15 +141,45 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };*/
 
+        // If the access token is available already assign it.
+        DataUtil.accessToken = AccessToken.getCurrentAccessToken();
+        if(DataUtil.accessToken != null){
+            //String sLogonName = DataUtil.accessToken.getUserId();
+            //Toast.makeText(getApplicationContext(),sLogonName,Toast.LENGTH_LONG).show();
+            DataUtil.profile = Profile.getCurrentProfile();
+        }
+
         // Callback registration
         mFacebookLoginButton.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //super.onSucess(loginResult);
+                DataUtil.accessToken = loginResult.getAccessToken();
+                DataUtil.profile = Profile.getCurrentProfile();
+
+                /*GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject me, GraphResponse response) {
+                                if (response.getError() != null) {
+                                    // handle error
+                                } else {
+                                    String email = me.optString("email");
+                                    String id = me.optString("id");
+                                    // send email and id to your web server
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,location,gender");
+                request.setParameters(parameters);
+                request.executeAsync();*/
+
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, MainActivity.class);  //从IntentActivity跳转到SubActivity
                 intent.putExtra("name", "raymond");  //放入数据
                 startActivity(intent);  //开始跳转
+                LoginManager.getInstance().logOut();
                 finish();
             }
 
